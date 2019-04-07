@@ -49,5 +49,234 @@ high performance code in a specific language, but how
 organizing it to result into a high amount of entropy, requiring
 less efforts to maintain.
 
-```diff
+# Core principle explained with `World` class
+
+Imagine we are coding a multiplayer game and have a `World` class
+that contains all spawned entities stored by their id. Each
+entity must have an unique id and must be spawned both on server
+and client. One way to implement this class is as follow. Here is
+our `Entity` base class with an `enum` to identify the types
+of our entities over network:
+
+```python
+class EntityType(IntEnum):
+    NPC = 0
+
+class Entity:
+    def __init__(self, id):
+        self.id = id
+
+class NPC(Entity):
+    def __init__(self, id, name):
+        super().__init__(id)
+        self.name = name
+
+    def __str__(self):
+    	return "{}({})".format(self.name, self.id)
 ```
+
+For the `World` class, as it is a multiplayer game, we have a `ClientWorld`
+class for client-side implementation and `ServerWorld` class for
+server-side implementation, but only the second one will be shown here:
+
+```python
+class World:
+    def __init__(self):
+        self.entities = {}
+
+class ServerWorld(World):
+    GUID = 0
+
+    def spawn(self, type, *args):
+        entity = None
+        if type == EntityType.NPC:
+            entity = NPC(ServerWorld.GUID, *args)
+        self.entities[ServerWorld.GUID] = entity
+        ServerWorld.GUID += 1
+        # Todo: send a packet to clients
+        return entity
+```
+
+You can see that it simply instantiate a new entity based on
+the given type and register it to a map.
+If we were to test our `spawn` method it would produce the
+following output:
+
+```python
+>>> world = ServerWorld()
+>>> print(world.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(0)
+>>> print(world.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(1)
+```
+
+It is working, but there is something definitely wrong with
+this code. The `ServerWorld` class has too much responsibilities
+for itself:
+
+* Instantiating new entities
+* Attributing free ids to them
+* Keeping track of them
+* Sending packets to spawn them on clients
+
+All of this has been tied up in one place in a single effort to
+make everything work together. But such thing is against
+entropy and consequently will require a lot of effort to
+understand and maintain.
+
+Also, how are we going to test these classes ? Should we
+write a single big unit test to check that spawning
+an entity on server would also spawn it on client with
+a unique id ? Or should we try to test each feature with
+four unit tests that will inevitably look redundant ?
+
+Here follow guidelines that will answer these questions.
+
+## Removing the global `GUID`
+
+First thing first, we will remove this global
+`GUID` variable. The `ServerWorld` shouldn't have to know how
+ids are attributed or care about it. Also, it force
+us to only have one single instance of this class because
+two different instances would share the variable:
+
+```python
+>>> world1 = ServerWorld()
+>>> print(world1.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(0)
+>>> print(world1.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(1)
+>>> world2 = ServerWorld()
+>>> print(world2.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(2)
+```
+
+For us this look fine because we know there will only be
+one world in the whole program. But we shouldn't care
+about this limitation or force it on anyone else. More
+important, this is against entropy to force such things.
+So we are simply going to remove the `GUID` variable
+and pass a function returning new ids to our `ServerWorld`
+instead:
+
+```python
+class ServerWorld(World):
+	def __init__(self, get_free_id):
+		super().__init__(self)
+		self.get_free_id = get_free_id
+
+    def spawn(self, type, *args):
+        entity = None
+        if type == EntityType.NPC:
+            entity = NPC(self.get_free_id(), *args)
+        self.entities[entity.id] = entity
+        # Todo: send a packet to clients
+        return entity
+```
+
+Now we can instantiate our world with any function or
+object that can return free ids which remove this
+responsibility from `ServerWorld` and just make everyhing
+simpler:
+
+```python
+class IdAttributor:
+    def __init__(self):
+        self.next_id = 0
+
+    def __call__(self):
+        id = self.next_id
+        self.next_id += 1
+        return id
+
+>>> world1 = ServerWorld(IdAttributor())
+>>> print(world1.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(0)
+>>> print(world1.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(1)
+>>> world2 = ServerWorld(IdAttributor())
+>>> print(world2.spawn(EntityType.NPC, "Spongebob"))
+Spongebob(0)
+```
+
+We can now have as many world instances as we want and
+have total control over how ids are attributed without
+modifying the `ServerWorld` class. We disorganized
+our code a little which increased its entropy and made
+it easier to maintain. But we are not done yet.
+
+## Adding an `EntityFactory`
+
+In our code we have an `enum` corresponding to the types
+of our entities:
+
+```python
+class EntityType(IntEnum):
+    NPC = 0
+```
+
+This is required for telling the client what type of
+entity must be spawned and to know how to instantiate
+it. But this is weird that the `ServerWorld` has to
+know about it as it just wan't to manage living
+entities and not to know how many different type there
+exist. Furthermore, there are too many ways our `ServerWorld`
+can become broken by modifying constructors of our
+entities and adding new values to the `enum`.
+
+This is why we are going to rely on a separate
+factory to instantiate entities:
+
+```python
+class ServerEntityFactory:
+    def __init__(self, get_free_id, on_spawned):
+        self.get_free_id = get_free_id
+        self.on_spawned = on_spawned
+
+    def spawn(self, type, *args):
+        entity = None
+        if type == EntityType.NPC:
+            entity = NPC(self.get_free_id(), *args)
+        # Todo: send a packet to clients
+        self.on_spawned(entity)
+        return entity
+```
+
+This is our factory server-side. You can see that it
+takes a function `get_free_id` that return the next free
+id and a callback `on_spawned` that is called when a new
+entity is instantiated. It will be used to automatically
+add spawned entities to our world. We will also remove the
+`ServerWorld` class and rewrite the `World` class as
+follow:
+
+```python
+class World:
+    def __init__(self):
+        self.entities = {}
+    
+    def add(self, entity):
+        self.entities[entity.id] = entity
+        print("Entity {} added".format(entity.id))
+```
+
+To test this code, we will simply create a `World` instance
+and bind the `add` function of the world to the `on_spawned` callback
+of the factory:
+
+```python
+>>> world = World()
+>>> factory = ServerEntityFactory(
+... 	IdAttributor(),
+... 	lambda entity: world.add(entity)
+... )
+>>> print(factory.spawn(EntityType.NPC, "Spongebob"))
+Entity 0 added
+Spongebob(0)
+```
+
+Now, the world is simply a `World` whose only responsibility is
+managing living entities. Not instantiating them, attributing free
+ids, or sending packets to clients. We greatly increased
+entropy of our code by creating three totally independant separate
+features that are easy to test, understand and maintain.
