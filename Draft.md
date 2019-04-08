@@ -367,6 +367,7 @@ identify and improve parts of our code that reduce entropy.
 Why ? Because the more entropy is produced, the more our code
 is maintainable.
 
-Fundamentally, such metrics is equivalent to measuring how
-much our code is organized.
+Fundamentally, measuring entropy is equivalent to measuring how
+much our code is organized because spending energy into keeping
+something organized is equivalent to lowering its entropy.
 
