@@ -358,4 +358,15 @@ for the `World` class that can now be used both on client and
 server with no distinction as it only require to know what an
 `entity` is, not how it is instantiated.
 
-# TODO 
+# Entropy as a metrics
+
+Now that we understand how entropy is related to coding, the
+next step is to find a way to measure how much entropy is
+produced by our code. Such metrics would help us to
+identify and improve parts of our code that reduce entropy.
+Why ? Because the more entropy is produced, the more our code
+is maintainable.
+
+Fundamentally, such metrics is equivalent to measuring how
+much our code is organized.
+
