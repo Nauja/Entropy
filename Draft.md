@@ -443,3 +443,47 @@ def compute(fun, max):
     return 1 - clamp(max / n, 0, 1)
 ```
 
+## Function parameters could be packed
+
+Multiple parameters that are always passed together
+should be packed together.
+
+Hints can be:
+
+* Too many parameters in the signature
+* Passing most of them from one function to another
+
+Yes:
+```python
+class Rect:
+    def __init__(x, y, width, height):
+        ...
+        
+def area(rect):
+    return rect.width * rect.height
+
+def compare(rect1, rect2):
+    return compare(area(rect1), area(rect2))
+```
+
+No:
+```python
+def area(w, h):
+    return w * h
+
+def compare(w1, h1, w2, h2):
+    return compare(area(w1, h1), area(w2, h2))
+```
+
+Measure:
+```python
+'''
+1 when n <= eps
+0 when n >= max
+'''
+def compute(fun, max):
+    n = eps
+    for call in get_calls_from(fun):
+        n = max(n, count_same_args(call, fun))
+     return 1 - clamp(max / n, 0, 1)
+```
