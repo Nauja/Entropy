@@ -339,7 +339,23 @@ Entity 0 added
 Spongebob(0)
 ```
 
-We greatly increased entropy of our code by separating the
-different features into three totally independent classes.
-This result into an easier understandable and testable
-code.
+We greatly increased entropy of our code by splitting the features
+into three different and totally independent classes. Advantages
+are that it's now easier to:
+
+* Write lightweight and understandable unit tests
+* Ensure that a feature is working
+* Write documentation or explain our classes and functions
+* Maintain or rewrite a feature
+* Reuse our classes and functions
+
+This is the kind of code you will write if you follow guidelines
+presented here. And the last point is important because
+`IdAttributor` is used here to attribute ids to entities but
+could now be used in any other context. It could also be in its
+own external library, including its unit test. The same goes
+for the `World` class that can now be used both on client and
+server with no distinction as it only require to know what an
+`entity` is, not how it is instantiated.
+
+# TODO 
