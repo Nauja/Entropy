@@ -367,7 +367,31 @@ identify and improve parts of our code that reduce entropy.
 Why ? Because the more entropy is produced, the more our code
 is maintainable.
 
-Fundamentally, measuring entropy is equivalent to measuring how
-much our code is organized because spending energy into keeping
-something organized is equivalent to lowering its entropy.
+Fundamentally, we know that:
+
+* Measuring entropy is equivalent to measuring how much our code
+is organized because spending energy into keeping something
+organized is equivalent to lowering its entropy.
+* Maximum entropy is reached in a system at equilibrium
+
+So, we are going to define a set of rules that describe how
+parts of the code can either be designed as organized or disorganized.
+Each rule will simply define a theorical maximum entropy reached when
+the code is fully disorganized (at equilibrium) or null if it is
+fully organized.
+
+With this we will be able to compute the theorical maximum entropy our program
+can reach and improve it to tend toward this goal. And it will also
+be possible to identify parts of the code that are far from the equilibrium.
+
+Each rule will also define a threshold code analysis tools can
+use to display a warning message.
+
+# Ruleset
+
+## Functions
+
+
+
+
 
