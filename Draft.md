@@ -387,11 +387,53 @@ be possible to identify parts of the code that are far from the equilibrium.
 Each rule will also define a threshold code analysis tools can
 use to display a warning message.
 
-# Ruleset
+# Primitives
 
-## Functions
+List of rules that depend on no other rules. They usually have
+a maximum entropy that can be configured by user depending on
+preferences.
 
+## Function has too many responsibilities
 
+> A function shouldn't have responsibilities beyond its scope.
 
+Hints can be:
 
+* A name stating `x_or_y`
+* Too many calls to other functions
+* Difficulty to explain how it works
+
+Yes:
+```python
+def get_user(login, password):
+    return find_user(login, password)
+
+def create_user(login, password):
+    user = User(login, password)
+    insert_user(user)
+    return user
+
+check_login(login)
+check_password(password)
+user = get_user(login, password)
+if not user:
+    user = create_user(login, password)
+```
+
+No:
+```python
+def get_or_create_user(login, password):
+    check_login(login)
+    check_password(password)
+    user = find_user(login, password)
+    if not user:
+        user = User(login, password)
+        insert_user(user)
+    return user
+```
+
+Entropy:
+
+* Maximum: n
+* Threshold: [0, n]
 
