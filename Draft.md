@@ -432,8 +432,14 @@ def get_or_create_user(login, password):
     return user
 ```
 
-Entropy:
-
-* Maximum: n
-* Threshold: [0, n]
+Measure:
+```python
+'''
+1 when n <= eps
+0 when n >= max
+'''
+def compute(fun, max):
+    n = count_calls_from(fun)
+    return 1 - clamp(max / n, 0, 1)
+```
 
