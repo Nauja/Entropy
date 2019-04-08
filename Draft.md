@@ -406,11 +406,11 @@ Hints can be:
 Yes:
 ```python
 def get_user(login, password):
-    return find_user(login, password)
+    return db.find_user(login, password)
 
 def create_user(login, password):
     user = User(login, password)
-    insert_user(user)
+    db.insert_user(user)
     return user
 
 check_login(login)
@@ -425,10 +425,10 @@ No:
 def get_or_create_user(login, password):
     check_login(login)
     check_password(password)
-    user = find_user(login, password)
+    user = db.find_user(login, password)
     if not user:
         user = User(login, password)
-        insert_user(user)
+        db.insert_user(user)
     return user
 ```
 
