@@ -395,7 +395,7 @@ preferences.
 
 ## Function has too many responsibilities
 
-> A function shouldn't have responsibilities beyond its scope.
+A function shouldn't have responsibilities beyond its scope.
 
 Hints can be:
 
