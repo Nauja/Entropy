@@ -443,6 +443,11 @@ def compute(fun, max):
     return 1 - clamp(max / n, 0, 1)
 ```
 
+Notes:
+
+* Calls to lambda functions passed as arguments shouldn't
+be considered because they are expected to be called
+
 ## Function parameters could be packed
 
 Multiple parameters that are always passed together
@@ -487,3 +492,8 @@ def compute(fun, max):
         n = max(n, count_same_args(call, fun))
      return 1 - clamp(max / n, 0, 1)
 ```
+
+Note:
+
+* This is in no way an indicator of functions having too many
+parameters
