@@ -38,7 +38,7 @@ of efforts and energy.
 
 Now, what would a codebase with a hight amount of entropy
 be like ? Functionalities would be written as separate and
-independant subprojects. Understanding how a functionality
+independent subprojects. Understanding how a functionality
 works and is written would require little effort and it would
 be easy to write unit tests covering as much code as possible.
 The best is that you wouldn't be afraid of having to rewrite
@@ -276,7 +276,70 @@ Spongebob(0)
 ```
 
 Now, the world is simply a `World` whose only responsibility is
-managing living entities. Not instantiating them, attributing free
-ids, or sending packets to clients. We greatly increased
-entropy of our code by creating three totally independant separate
-features that are easy to test, understand and maintain.
+managing living entities, not instantiating them, attributing free
+ids, or sending packets to clients.
+
+## Conclusion
+
+Final version of the code:
+
+```python
+class EntityType(IntEnum):
+    NPC = 0
+
+class Entity:
+    def __init__(self, id):
+        self.id = id
+
+class NPC(Entity):
+    def __init__(self, id, name):
+        super().__init__(id)
+        self.name = name
+
+    def __str__(self):
+    	return "{}({})".format(self.name, self.id)
+
+class IdAttributor:
+    def __init__(self):
+        self.next_id = 0
+
+    def __call__(self):
+        id = self.next_id
+        self.next_id += 1
+        return id
+
+class ServerEntityFactory:
+    def __init__(self, get_free_id, on_spawned):
+        self.get_free_id = get_free_id
+        self.on_spawned = on_spawned
+
+    def spawn(self, type, *args):
+        entity = None
+        if type == EntityType.NPC:
+            entity = NPC(self.get_free_id(), *args)
+        # Todo: send a packet to clients
+        self.on_spawned(entity)
+        return entity
+
+class World:
+    def __init__(self):
+        self.entities = {}
+    
+    def add(self, entity):
+        self.entities[entity.id] = entity
+        print("Entity {} added".format(entity.id))
+
+>>> world = World()
+>>> factory = ServerEntityFactory(
+... 	IdAttributor(),
+... 	lambda entity: world.add(entity)
+... )
+>>> print(factory.spawn(EntityType.NPC, "Spongebob"))
+Entity 0 added
+Spongebob(0)
+```
+
+We greatly increased entropy of our code by separating the
+different features into three totally independent classes.
+This result into an easier understandable and testable
+code.
