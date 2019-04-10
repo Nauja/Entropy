@@ -358,4 +358,142 @@ for the `World` class that can now be used both on client and
 server with no distinction as it only require to know what an
 `entity` is, not how it is instantiated.
 
-# TODO 
+# Entropy as a metrics
+
+Now that we understand how entropy is related to coding, the
+next step is to find a way to measure how much entropy is
+produced by our code. Such metrics would help us to
+identify and improve parts of our code that reduce entropy.
+Why ? Because the more entropy is produced, the more our code
+is maintainable.
+
+Fundamentally, we know that:
+
+* Measuring entropy is equivalent to measuring how much our code
+is organized because spending energy into keeping something
+organized is equivalent to lowering its entropy.
+* Maximum entropy is reached in a system at equilibrium
+
+So, we are going to define a set of rules that describe how
+parts of the code can either be designed as organized or disorganized.
+Each rule will simply define a theorical maximum entropy reached when
+the code is fully disorganized (at equilibrium) or null if it is
+fully organized.
+
+With this we will be able to compute the theorical maximum entropy our program
+can reach and improve it to tend toward this goal. And it will also
+be possible to identify parts of the code that are far from the equilibrium.
+
+Each rule will also define a threshold code analysis tools can
+use to display a warning message.
+
+# Primitives
+
+List of rules that depend on no other rules. They usually have
+a maximum entropy that can be configured by user depending on
+preferences.
+
+## Function has too many responsibilities
+
+A function shouldn't have responsibilities beyond its scope.
+
+Hints can be:
+
+* A name stating `x_or_y`
+* Too many calls to other functions
+* Difficulty to explain how it works
+
+Yes:
+```python
+def get_user(login, password):
+    return db.find_user(login, password)
+
+def create_user(login, password):
+    user = User(login, password)
+    db.insert_user(user)
+    return user
+
+check_login(login)
+check_password(password)
+user = get_user(login, password)
+if not user:
+    user = create_user(login, password)
+```
+
+No:
+```python
+def get_or_create_user(login, password):
+    check_login(login)
+    check_password(password)
+    user = db.find_user(login, password)
+    if not user:
+        user = User(login, password)
+        db.insert_user(user)
+    return user
+```
+
+Measure:
+```python
+'''
+1 when n <= eps
+0 when n >= max
+'''
+def compute(fun, max):
+    n = count_calls_from(fun)
+    return 1 - clamp(max / n, 0, 1)
+```
+
+Notes:
+
+* Calls to lambda functions passed as arguments shouldn't
+be considered because they are expected to be called
+
+## Function parameters could be packed
+
+Multiple parameters that are always passed together
+should be packed together.
+
+Hints can be:
+
+* Too many parameters in the signature
+* Passing most of them from one function to another
+
+Yes:
+```python
+class Rect:
+    def __init__(x, y, width, height):
+        ...
+        
+def area(rect):
+    return rect.width * rect.height
+
+def compare(rect1, rect2):
+    return compare(area(rect1), area(rect2))
+```
+
+No:
+```python
+def area(w, h):
+    return w * h
+
+def compare(w1, h1, w2, h2):
+    return compare(area(w1, h1), area(w2, h2))
+```
+
+Measure:
+```python
+'''
+1 when n <= eps
+0 when n >= max
+'''
+def compute(fun, max):
+    n = eps
+    for call in get_calls_from(fun):
+        n = max(n, count_same_args(call, fun))
+     return 1 - clamp(max / n, 0, 1)
+```
+
+Note:
+
+* This is in no way an indicator of functions having too many
+parameters
