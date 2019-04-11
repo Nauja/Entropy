@@ -29,34 +29,3 @@ Feedback is most welcome !
 ## Tools
 
 * [PyRabbit](https://github.com/Nauja/pyrabbit): Static code source analysis for Python
-
-## Rules format
-
-Rules are written as follow:
-<html>
-<blockquote>
-<h3>Rule's name</h3>
-<hr/>
-<i>Short description.</i><br/><br/>
-Hints can be:<br/>
-<ul><li><i>list of tips to detect this case</i></li></ul><br/>
-  
-Yes:
-```python
-# Something to do
-```
-
-No:
-```python
-# Something to avoid
-```
-
-Measure:
-```
-# How to measure entropy
-```
-<br/>
-Notes:
-<ul><li><i>special notes</i></li></ul>
-</blockquote>
-</html>
