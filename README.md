@@ -23,4 +23,4 @@ Feedback is most welcome !
 
 ## Tools
 
-* [PyRabbit](https://github.com/Nauja/pyrabbit): Python 2 & Python 3
+* [PyRabbit](https://github.com/Nauja/pyrabbit): Static code source analysis for Python
