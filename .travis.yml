@@ -1,0 +1,17 @@
+language: python
+python:
+  - "3.6"
+  
+install:
+  - pip install panflute
+  
+before_script:
+  - sudo apt-get install texlive-latex-base
+  - sudo apt-get install texlive-fonts-recommended
+  - sudo apt-get install texlive-fonts-extra
+  - sudo apt-get install texlive-latex-extra
+  - sudo apt-get install pandoc
+  - sudo apt-get install pandoc-citeproc
+script:
+    # Test install with current version of setuptools
+  - make Draft.pdf
