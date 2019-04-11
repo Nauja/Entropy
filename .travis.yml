@@ -12,6 +12,7 @@ env:
   - USER="Nauja"
   - EMAIL="travis@travis-ci.org"
   - GH_REPO="github.com/Nauja/Entropy.git"
+  - secure: Trs5Ba8X6qSHujuNyUXZA2QAWBuh61muXBslKF/DMrYXhHdws0Kbg0c8T8oL572CgLiBAtXBnrwTjjwuY8MHw+6uBtHaqrrldG8VtAKKGhJ+RzsdJDtMGr2elsmcLryNxntAQlZ2aKLctK5j5YiOV8e8fcOOeDwqqlVpXAUN0ie9hr8EMe0FjS0rJUggp9WZJBxiM57JY6hV6beO/DUyGkSSIxGfkk8sjIO/GxeVNAx7/wom/4m1SzGuorh9CMnYD8x7MST4Bn+opQP4CbFv50fLKsJPi8Ptg40y2bDpO84pg2KmNTt2MPIYiIFl0WoRIX+ntYIRNxSeHmYDzOV5LXltj5mFrd12oTYuEpzggY17RK8OytneZ3BgD8gLQspZHMuXq1hn2kmbHkAg7zGEjS/Oxbdcp6eIKfTkknMykg43DWWmE7zARrZb3qdugsCizUoYibYoRBTzGR64qjjVa/okvQTehUdCRL+DuswoY5yXCUFC+vK9kXysiH0XriFIvwMBZWMp7ccxjg26eWLzLFc1N95vzxpcLuk9BpgsVmmq2vFWxT77Lkc5Fl82zHFZUq+p1Fsnb+ihMqgCz8yVW501farxD9cCDEiqyaMb2Inqa1LfSnCVh4Lg9Dr+PKJrYlgJBjnKzIsImRMfA3wcR5MZQ/S8CivpfHP7Aidtkjo=
 before_script:
   - sudo apt-get install texlive-latex-base
   - sudo apt-get install texlive-fonts-recommended
@@ -28,4 +29,4 @@ after_success:
   - git config --global user.email ${EMAIL}
   - git config --global user.name ${USER}
   - git commit -a -m "Travis commit"
-  - git push "https://Nauja:${SECURE_TOKEN}@${GH_REPO}" master
+  - git push "https://${TRAVIS_SECURE_TOKEN_NAME}@${GH_REPO}" master
