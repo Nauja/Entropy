@@ -55,8 +55,8 @@ Measure:
 ```
 # How to measure entropy
 ```
-
-Notes:<br/>
+<br/>
+Notes:
 <ul><li><i>special notes</i></li></ul>
 
 </blockquote>
