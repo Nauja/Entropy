@@ -1,7 +1,7 @@
-# Entropy Standard
+# Entropy - Coding Standard
 Programming conventions
 
-## Entropy
+### Introduction
 
 **There must exist universal coding guidelines reflecting how nature works.**
 
