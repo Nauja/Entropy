@@ -1,7 +1,10 @@
 language: python
 python:
   - "3.6"
-  
+cache:
+  - pandoc
+  - texlive-latex-base
+  - texlive-latex-extra
 install:
   - pip install panflute
 env:
@@ -19,7 +22,6 @@ before_script:
   - sudo apt-get install texlive-latex-extra
   - curl -L https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb > ./pandoc.deb
   - sudo dpkg -i ./pandoc.deb
-  - sudo gem install travis
 script:
     # Test install with current version of setuptools
   - make Draft.pdf
