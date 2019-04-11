@@ -58,6 +58,5 @@ Measure:
 <br/>
 Notes:
 <ul><li><i>special notes</i></li></ul>
-
 </blockquote>
 </html>
