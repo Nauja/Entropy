@@ -21,6 +21,11 @@ improve parts of your code that can be.
 
 Feedback is most welcome !
 
+## Documents
+
+* [Draft.md](Draft.md)
+* [Draft.pdf](pdf/Draft.pdf)
+
 ## Tools
 
 * [PyRabbit](https://github.com/Nauja/pyrabbit): Static code source analysis for Python
