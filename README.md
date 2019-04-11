@@ -39,7 +39,7 @@ Rules are written as follow:
 <hr/>
 <i>Short description.</i><br/><br/>
 Hints can be:<br/>
-<ul><li><i>list of tips to detect this case</i></li></ul>
+<ul><li><i>list of tips to detect this case</i></li></ul><br/>
   
 Yes:
 ```python
