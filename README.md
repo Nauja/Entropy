@@ -23,6 +23,4 @@ Feedback is most welcome !
 
 ## Tools
 
-List of tools to measure entropy of your code:
-
-Python: [PyRabbit](https://github.com/Nauja/pyrabbit)
+* [PyRabbit](https://github.com/Nauja/pyrabbit): Python 2 & Python 3
