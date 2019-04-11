@@ -10,8 +10,8 @@ before_script:
   - sudo apt-get install texlive-fonts-recommended
   - sudo apt-get install texlive-fonts-extra
   - sudo apt-get install texlive-latex-extra
-  - sudo apt-get install pandoc
-  - sudo apt-get install pandoc-citeproc
+  - curl -L https://github.com/jgm/pandoc/releases/download/2.7.2/pandoc-2.7.2-1-amd64.deb > ./pandoc.deb
+  - sudo dpkg -i ./pandoc.deb
 script:
     # Test install with current version of setuptools
   - make Draft.pdf
