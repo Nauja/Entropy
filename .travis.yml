@@ -30,4 +30,4 @@ after_success:
   - git config --global user.name ${USER}
   - git add pdf/Draft.pdf
   - git commit -m ${MESSAGE}
-  - git push "https://${TRAVIS_SECURE_TOKEN_NAME}@${GH_REPO}" master > /dev/null 2>&1
+  - git push "https://Nauja:${SECURE_TOKEN}@${GH_REPO}" master
