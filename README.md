@@ -18,6 +18,8 @@ will prove that code written this way tend to be clearer.
 Ultimately it provides a way to measure entropy in your code and use it as a metric to identify and
 improve parts of your code that can be.
 
+Feedback is most welcome !
+
 ## Tools
 
 List of tools to measure entropy of your code:
