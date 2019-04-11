@@ -15,7 +15,8 @@ a single system with a lot. Thus it can be seen as the [single responsibility pr
 
 Of course we don't fully understand how nature works, but this is a k-approximation; and examples
 will prove that code written this way tend to be clearer.
-Ultimately it provides a way to measure entropy in your code and use it as a metric.
+Ultimately it provides a way to measure entropy in your code and use it as a metric to identify and
+improve parts of your code that can be.
 
 ## Tools
 
