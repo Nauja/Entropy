@@ -13,6 +13,9 @@ nature works. They emerged from the main idea that our code should reflect the f
 composed of a multitude of independent systems each having little responsibilities rather than
 a single system with a lot. Thus it can be seen as the [single responsibility principle](https://en.wikipedia.org/wiki/Single_responsibility_principle).
 
+Of course we don't fully understand how nature works, but this is a k-approximation; and you will see with
+examples given that code written this way tend to be clearer. Ultimately it provides a way to measure entropy
+in your code and use it as a metric.
 
 ## Tools
 
