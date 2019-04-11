@@ -23,8 +23,8 @@ Feedback is most welcome !
 
 ## Documents
 
-* [Draft.md](Draft.md): Unstable version of the standard
-* [Draft.pdf](pdf/Draft.pdf): Exported to pdf
+* [Draft.md](Draft.md): Unstable version of the standard (markdown)
+* [Draft.pdf](pdf/Draft.pdf): Unstable version of the standard (pdf)
 
 ## Tools
 
