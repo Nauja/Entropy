@@ -27,5 +27,5 @@ after_success:
   - git remote
   - git config --global user.email ${EMAIL}
   - git config --global user.name ${USER}
-  - git commit -am ${MESSAGE}
+  - git commit -a -m "Travis commit"
   - git push "https://Nauja:${SECURE_TOKEN}@${GH_REPO}" master
