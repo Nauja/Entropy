@@ -9,9 +9,9 @@ Language agnostic coding standard and static code analysis tool.
 Entropy is a coding standard aimed to help you writing code easier to understand, maintain and unit test.
 
 It works by defining a set of simple rules that encourage you to write code that tend to mimic how
-nature works. The main idea is that it should reflect the fact that nature is
-composed of a multitude of independent systems having little responsibilities rather than
-a single system with a lot.
+nature works. They emerged from the main idea that our code should reflect the fact that nature is
+composed of a multitude of independent systems each having little responsibilities rather than
+a single system with a lot. Thus is can be seen as the [single responsibility principle](https://en.wikipedia.org/wiki/Single_responsibility_principle).
 
 
 ## Tools
