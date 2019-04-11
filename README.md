@@ -1,5 +1,6 @@
 # Entropy - Coding Standard
-Programming conventions
+
+Language agnostic coding standard and static code analysis tool.
 
 ## Introduction
 
