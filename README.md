@@ -1,7 +1,7 @@
 # Entropy - Coding Standard
 Programming conventions
 
-### Introduction
+## Introduction
 
 **There must exist universal coding guidelines reflecting how nature works.**
 
@@ -13,7 +13,7 @@ composed of a multitude of independent systems having little responsibilities ra
 a single system with a lot.
 
 
-### Tools
+## Tools
 
 List of tools to measure entropy of your code:
 
