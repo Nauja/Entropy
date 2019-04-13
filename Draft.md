@@ -543,3 +543,36 @@ Note:
 
 * This is in no way an indicator of functions having too many
 parameters
+
+## Function can be more extensible
+
+Yes:
+```python
+def parse(file):
+    ...
+   
+def run(files):
+    for _ in files:
+        parse(_)
+
+run([...])
+```
+
+No:
+```python
+def default_parse(file):
+    ...
+   
+def run(files, *, parse=None):
+    parse = parse or default_parse
+    for _ in files:
+        parse(_)
+
+run([...], parse=...)
+```
+
+Measure:
+```python
+'''
+# todo
+```
