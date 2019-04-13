@@ -491,6 +491,8 @@ Notes:
 
 * Is it your responsibility of your code to handle all possible cases
 or the one of calling function
+* Prefer one variant with a common interface as parameter rather than
+multiple variants
 
 ## Function parameters could be packed
 
