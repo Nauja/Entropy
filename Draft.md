@@ -544,35 +544,56 @@ Note:
 * This is in no way an indicator of functions having too many
 parameters
 
-## Function can be more extensible
+## Function makes too many assumptions
+
+A function should make the less assumptions possible about its parameters.
+
+Hints:
+
+* Too restrictive parameters
 
 Yes:
 ```python
-def parse(file):
-    ...
-   
-def run(files):
-    for _ in files:
-        parse(_)
+def default_load(filename: str) -> str:
+    with open(filename, "r") as f:
+        return f.read()
 
-run([...])
+def default_parse(input: Any, *, load: Callable[[Any], str] = None) -> str:
+    load = load or default_load
+    content = load(input)
+    # do something
+    return result
+
+def parse_string(input: str) -> str:
+    return default_parse(input, load=lambda _: _)
+
+def run(inputs: List[Any], *, parse: Callable[[List[Any]], str] = None) -> List[str]:
+    parse = parse of default_parse
+    return [parse(input) for input in inputs]
+
+run(["/some/path"])
+run(["/some/path"], parse=default_parse)
+run(["hello world !", parse=parse_string)
 ```
 
 No:
 ```python
-def default_parse(file):
-    ...
-   
-def run(files, *, parse=None):
-    parse = parse or default_parse
-    for _ in files:
-        parse(_)
+def parse(input: str) -> str:
+    with open(input, "r") as f:
+        content = f.read()
+        # do something
+        return result
 
-run([...], parse=...)
+def run(inputs: List[str]) -> List[str]:
+    return [parse(input) for input in inputs]
+
+run(["/some/path"])
 ```
 
-Measure:
-```python
-'''
-# todo
-```
+In `No` example, `run` is expecting to be called with a list of
+filenames and let `parse` read them. This is wrong because users
+wan't to use `parse` for the functionality it provides and there is
+no reason here to restrict it to files. In `Yes` example, `run` and
+`parse` are taking optional callables so that users can customize how
+inputs are converted to string for being parsed, thus providing the
+exact same functionality, but for any inputs.
