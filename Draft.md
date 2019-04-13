@@ -551,6 +551,7 @@ A function should make the less assumptions possible about its parameters.
 Hints:
 
 * Too restrictive parameters
+* Code closed to outside
 
 Yes:
 ```python
