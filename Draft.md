@@ -574,7 +574,7 @@ def parse_string(input: str) -> str:
     
 run(["/some/path"])
 run(["/some/path"], parse=default_parse)
-run(["hello world !", parse=parse_string)
+run(["hello world !"], parse=parse_string)
 ```
 
 No:
