@@ -394,14 +394,7 @@ use to display a warning message.
 
 # Functions
 
-A function shouldn't have responsibilities beyond its scope.
-
-Hints can be:
-
-* A name stating `x_or_y`
-* Too many calls to other functions
-* Too many signatures
-* Difficulty to explain how it works
+Function related rules.
 
 ## Function has too many calls
 
