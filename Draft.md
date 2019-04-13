@@ -564,13 +564,14 @@ def default_parse(input: Any, *, load: Callable[[Any], str] = None) -> str:
     # do something
     return result
 
-def parse_string(input: str) -> str:
-    return default_parse(input, load=lambda _: _)
-
 def run(inputs: List[Any], *, parse: Callable[[List[Any]], str] = None) -> List[str]:
     parse = parse of default_parse
     return [parse(input) for input in inputs]
 
+# Custom parse function for str inputs
+def parse_string(input: str) -> str:
+    return default_parse(input, load=lambda _: _)
+    
 run(["/some/path"])
 run(["/some/path"], parse=default_parse)
 run(["hello world !", parse=parse_string)
