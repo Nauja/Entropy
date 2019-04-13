@@ -392,13 +392,18 @@ be possible to identify parts of the code that are far from the equilibrium.
 Each rule will also define a threshold code analysis tools can
 use to display a warning message.
 
-# Primitives
+# Functions
 
-List of rules that depend on no other rules. They usually have
-a maximum entropy that can be configured by user depending on
-preferences.
+A function shouldn't have responsibilities beyond its scope.
 
-## Function has too many responsibilities
+Hints can be:
+
+* A name stating `x_or_y`
+* Too many calls to other functions
+* Too many signatures
+* Difficulty to explain how it works
+
+## Function has too many calls
 
 A function shouldn't have responsibilities beyond its scope.
 
@@ -452,6 +457,47 @@ Notes:
 
 * Calls to lambda functions passed as arguments shouldn't
 be considered because they are expected to be called
+
+## Function has too many signatures
+
+A function shouldn't have responsibilities beyond its scope.
+
+Hints can be:
+
+* Too many signatures
+* Too many parameters to achieve same result
+
+Yes:
+```python
+def parse(source):
+    ...
+
+with open(filename, "r") as f:
+    r = parse(f.read())
+```
+
+No:
+```python
+def parse(source):
+    ...
+
+def parse_file(filename):
+    with open(filename, "r") as f:
+    	return parse(f.read())
+
+r = parse_file("...")
+```
+
+Measure:
+```python
+'''
+# todo
+```
+
+Notes:
+
+* Is it your responsibility of your code to handle all possible cases
+or the one of calling function
 
 ## Function parameters could be packed
 
