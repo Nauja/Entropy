@@ -28,4 +28,4 @@ Feedback is most welcome !
 
 ## Tools
 
-* [PyRabbit](https://github.com/Nauja/pyrabbit): Static code source analysis for Python
+* [PySachi](https://github.com/Nauja/pysachi): Static code source analysis for Python
