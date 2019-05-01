@@ -392,6 +392,45 @@ be possible to identify parts of the code that are far from the equilibrium.
 Each rule will also define a threshold code analysis tools can
 use to display a warning message.
 
+# Readability
+
+## Mixed naming conventions
+
+You shouldn't mix multiple naming conventions together.
+
+Yes:
+```python
+def first_function():
+    pass
+
+def second_function():
+    pass
+```
+
+No:
+```python
+def firstFunction():
+    pass
+
+def second_function():
+    pass
+```
+
+Measure:
+```python
+'''
+1 when n <= eps
+0 when n >= max
+'''
+def compute(fun, max):
+    # todo
+```
+
+Notes:
+
+* This shouldn't take symbols defined in other libraries
+into account
+
 # Functions
 
 Function related rules.
