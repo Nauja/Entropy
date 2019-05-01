@@ -394,9 +394,9 @@ use to display a warning message.
 
 # Readability
 
-## Mixed naming conventions
+## Mixed coding conventions
 
-You shouldn't mix multiple naming conventions together.
+You shouldn't mix multiple coding conventions together.
 
 Yes:
 ```python
@@ -419,17 +419,21 @@ def second_function():
 Measure:
 ```python
 '''
-1 when n <= eps
-0 when n >= max
+potential_entropy = n_children
 '''
-def compute(fun, max):
-    # todo
+def compute(parent, conventions):
+    n = [count_matching_children(c) for c in conventions]
+    if sum([1 if v > 0 for v in n else 0]) > 1:
+        return 0
+    return count_children()
 ```
 
 Notes:
 
 * This shouldn't take symbols defined in other libraries
 into account
+* Multiple coding conventions can be used but shouldn't be
+mixed together inside of one function, or class, ...
 
 # Functions
 
