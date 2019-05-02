@@ -419,19 +419,22 @@ def second_function():
 Measure:
 ```python
 '''
-potential_entropy = n_children
+max entropy is the number of symbols defined in parent.
+value is 0 in case of mixed coding conventions.
 '''
-def compute(parent, conventions):
-    n = [count_matching_children(c) for c in conventions]
-    if sum([1 if v > 0 for v in n else 0]) > 1:
-        return 0
-    return count_children()
+def entropy(parent, conventions):
+    children = find_children(parent)
+    totals = [count_matching(children, c) for c in conventions]
+    is_mixed = sum(min(v, 1) for v in totals) > 1:
+    return {
+        "max": len(children),
+	"value": 0 if is_mixed else len(children)
+    }
 ```
 
 Notes:
 
-* This shouldn't take symbols defined in other libraries
-into account
+* This should only take locally defined symbols into account
 * Multiple coding conventions can be used but shouldn't be
 mixed together inside of one function, or class, ...
 
@@ -482,11 +485,14 @@ Measure:
 ```python
 '''
 1 when n <= eps
-0 when n >= max
+0 when n >= threshold
 '''
-def compute(fun, max):
+def entropy(fun, threshold):
     n = count_calls_from(fun)
-    return 1 - clamp(max / n, 0, 1)
+    return {
+        "max": 1,
+	"value": 1 - clamp(threshold / n, 0, 1)
+    }
 ```
 
 Notes:
@@ -575,11 +581,14 @@ Measure:
 1 when n <= eps
 0 when n >= max
 '''
-def compute(fun, max):
+def compute(fun, threshold):
     n = eps
     for call in get_calls_from(fun):
         n = max(n, count_same_args(call, fun))
-     return 1 - clamp(max / n, 0, 1)
+    return {
+        "max": 1,
+	"value": 1 - clamp(threshold / n, 0, 1)
+    }
 ```
 
 Note:
