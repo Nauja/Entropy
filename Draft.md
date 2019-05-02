@@ -419,21 +419,21 @@ def second_function():
 Measure:
 ```python
 '''
-max entropy is the number of symbols defined in parent.
-value is 0 in case of mixed coding conventions.
+max entropy is the number of symbols in parent.
+value is the number of symbols following the coding convention.
 '''
 def entropy(parent, conventions):
-    children = find_children(parent)
-    totals = [count_matching(children, c) for c in conventions]
-    is_mixed = sum(min(v, 1) for v in totals) > 1:
+    symbols = find_symbols(parent)
+    default = matching_convention(symbols[0], conventions)
     return {
-        "max": len(children),
-	"value": 0 if is_mixed else len(children)
+        "max": len(symbols),
+	"value": count_matching(symbols, default)
     }
 ```
 
 Notes:
 
+* Default convention may be the one of first encountered symbol
 * This should only take locally defined symbols into account
 * Multiple coding conventions can be used but shouldn't be
 mixed together inside of one function, or class, ...
