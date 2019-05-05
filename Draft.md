@@ -247,6 +247,15 @@ to it.
 
 ## Conclusion
 
+In conclusion, we have seen four important principles:
+- Don't give something responsibilities beyond its scope
+- Code with little to no added value can be removed or refactored
+- Don't make assumptions about inputs
+- Giving the right name is as important as writing good code
+
+These principles form the main philosophy behind this coding standard.
+Keeping them in mind and trying to follow them will help you write better code.
+
 # Readability
 
 ## Mixed coding conventions
