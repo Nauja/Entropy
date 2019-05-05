@@ -56,24 +56,22 @@ less efforts to maintain.
 
 # Whole principle explained with one simple example
 
-Let's take the case of a simple function such as `sum`:
+This example is going to be overkill but will help us concentrate on
+what interest us here; how to make up our mind to write code that is
+easily documentable, readable, testable and maintainable.
+
+So, let's take the case of a simple function such as `sum`:
 
 ```python
 def sum(a:int, b:int) -> int:
     return a + b
 ```
 
-This example is going to be overkill for such function
-but will help us concentrate on what interest us - the
-whole principle behind this coding - how to make up
-our mind to write simple readable, testable and
-maintainable code.
-
-The most important when writing code is to keep in
-mind what his added value is. You write
-code to take inputs, transform it, then generate output.
-But we often write code according to the way we think its users
-or ourself are going to use it and end up with something like this:
+The most important when writing code is to keep in mind what its
+added value is. We are writing something that transforms some inputs
+to generate some outputs. One common pitfall is to not write it according to
+its added value but the way we think its users or ourself are going
+to use it, ending up with something like this:
 
 ```python
 def sum(filename:str) -> int:
@@ -83,13 +81,13 @@ def sum(filename:str) -> int:
 ```
 
 Here we have a function that sum numbers written on each line of a file.
+Why ? Because we think this is the most common way it's going to be used.
 Let's be clear, this shouldn't be the responsibility of this function
 to read numbers from a file or to even know what a file is.
 
 One important thing to keep in mind is that it becomes way too complex
-to understand, test, document or maintain a function when it has
-responsibilities beyond its scope; so it should be avoided by limiting
-its scope to its added value.
+to document, read, test or maintain a function when it has responsibilities
+beyond its scope, thus it should be avoided by limiting its scope to its added value.
 
 ```python
 def sum(a:int, b:int, *, op:Callable[[int,int],int]):
