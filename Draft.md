@@ -206,10 +206,10 @@ optional parameters.
 ## Good naming is as important as good coding
 
 At this stage you should notice that the added value of our function changed from
-`applying an operator to two numbers` to `applying a lambda to sequence of elements` as
+`applying an operator to two numbers` to `applying a lambda to pair of elements in a sequence` as
 shown by the `"hello world !"` example.
 
-Name of the function is no more related to its value so we are going to change it:
+Name of the function is no more related to its added value so we are going to change it:
 
 ```python
 def reduce(fun:Callable[[Any,Any],Any], *sequence:List[Any], initial:Any = None) -> Any:
@@ -233,6 +233,19 @@ def reduce(fun:Callable[[Any,Any],Any], *sequence:List[Any], initial:Any = None)
         initial = fun(initial, _)
     return initial
 ```
+
+We renamed the `calc` function to `reduce` which is a more suitable name for such function.
+As a side effect, the `op` parameter has been renamed to `fun` and is now mandatory because
+there is no way our function can guess what the default value would be and we don't want to
+make such assumption.
+
+Fourth principle to keep in mind is that having difficulties to determine the added value or
+scope of a function or to write documentation, unit tests for it may indicate that it is poorly
+named. As a programmer, finding the right name for something is as important as writing good code because
+a name can totally change the way you look at it or the responsibilities you would give
+to it.
+
+## Conclusion
 
 # Readability
 
