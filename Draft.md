@@ -72,10 +72,8 @@ maintainable code.
 The most important when writing code is to keep in
 mind what his added value is. You write
 code to take inputs, transform it, then generate output.
-Scope of your code should be limited to functionalities
-it provides; to its added value.
-
-Let's now take this `sum` function:
+But we often write code according to the way we think its users
+or ourself are going to use it and end up with something like this:
 
 ```python
 def sum(filename:str) -> int:
@@ -84,13 +82,14 @@ def sum(filename:str) -> int:
         v += int(f.readline())
 ```
 
-Here we have a function that sum numbers written
-on each line of a file. Let's be clear, this
-shouldn't be the responsibility of this function
-to read numbers from a file or to even know what a
-file is. Here this is clearly the case, but we often
-end up with such function when writing code assuming
-how it's going to be used or what inputs will be.
+Here we have a function that sum numbers written on each line of a file.
+Let's be clear, this shouldn't be the responsibility of this function
+to read numbers from a file or to even know what a file is.
+
+One important thing to keep in mind is that it becomes way too complex
+to understand, test, document or maintain a function when it has
+responsibilities beyond its scope; so it should be avoided by limiting
+its scope to its added value.
 
 ```python
 def sum(a:int, b:int, *, op:Callable[[int,int],int]):
