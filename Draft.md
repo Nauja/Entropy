@@ -136,8 +136,8 @@ def calc(a:int, b:int, *, op:Optional[Callable[[int,int],int]] = None) -> int:
     return op(a, b)
 ```
 
-Here we wrote a more generalized version of our `sum` function by simply moving `+` operator
-- previously implicit because of function's name - to an optional parameter defaulting
+Here we wrote a more generalized version of our `sum` function by simply moving `+` operator - previously
+implicit because of function's name - to an optional parameter defaulting
 to the builtin `operator.add` function. As a side effect, we now have a useful documentation
 with examples of usage because it becames easy to explain what the added value is and how it
 can be used.
@@ -145,6 +145,66 @@ can be used.
 Second principle to keep in mind is that having difficulties to write useful documentation
 or unit test for your code can be a hint that it doesn't have enough added value
 to exist on its own and should be removed or generalized to something else.
+
+## Too much assumptions
+
+What we can say about the `calc` function is that it takes two numbers and apply a lambda to it.
+But why only two numbers ? And why does the `type hints` indicate it should be `int` ?
+Making too much assumptions about functions parameters is another pitfall as it make your
+code closed to extension.
+
+Let's see how it can be improved:
+
+```python
+def calc(*numbers:List[Any], op:Optional[Callable[[Any,Any],Any]] = None, initial:Any = None) -> Any:
+    """Perform an operation on numbers.
+    
+    >>> calc()
+    0
+    >>> calc(1, 2, 3)
+    6
+    >>> calc(1, 2, 3, operator.add)
+    6
+    >>> calc(1, 2, 3, operator.mul)
+    6
+    
+    :param numbers: list of numbers
+    :param op: operation or operator.add by default
+    :returns: result of op applied to numbers
+    """
+    op = op or operator.add
+    initial = initial if initial is not None else 0
+    for n in numbers:
+        initial = op(initial, n)
+    return initial
+```
+
+As you can see by `type hints` and documentation, our `calc` function became
+generic enough to handle an arbitrary amount of numbers of any type and apply
+the lambda on them. We also added a new parameter `initial` because this is
+not the responsibility of `calc` to know what the initial value will be (first principle)
+and we don't want to close our code to extension by making assumptions on it (this principle).
+
+This open your code to extension and allow others to use it in cases you didn't
+even expect they would:
+
+```python
+>>> calc("hello", " ", "world", " !", initial="")
+hello world !
+>>> calc(*"hello world !", op=lambda a, b: a + ord(b))
+1181
+```
+
+Third principle to keep in mind is that simplicity, readability and extensibility
+of your code can be greatly improved by making the less assumptions possible
+about inputs and allowing users to override these assumptions by providing
+optional parameters.
+
+## Good naming is as important as good coding
+
+At this stage you should notice that the added value of our function changed from
+`applying an operator to two numbers` to `applying a lambda to pair of elements`.
+
 
 # Readability
 
