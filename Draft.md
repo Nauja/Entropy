@@ -84,7 +84,7 @@ Here we have a function that sum numbers written on each line of a file.
 Why ? Because we think this is the most common way it's going to be used.
 Let's be clear, this shouldn't be the responsibility of this function
 to read numbers from a file or to even know what a file is.
-First principle thing to keep in mind is that it becomes way too complex
+First principle to keep in mind is that it becomes way too complex
 to document, read, test or maintain a function when it has responsibilities
 beyond its scope, thus it should be avoided as much as possible by limiting
 its scope to its added value.
