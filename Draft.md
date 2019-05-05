@@ -59,12 +59,38 @@ less efforts to maintain.
 Let's take the case of a simple function such as `sum`:
 
 ```python
-def sum(a:int, b:int):
+def sum(a:int, b:int) -> int:
     return a + b
 ```
 
 This example is going to be overkill for such function
-but will help us concentrate on what interest us.
+but will help us concentrate on what interest us - the
+whole principle behind this coding - how to make up
+our mind to write simple readable, testable and
+maintainable code.
+
+The most important when writing code is to keep in
+mind what his added value is. You write
+code to take inputs, transform it, then generate output.
+Scope of your code should be limited to functionalities
+it provides; to its added value.
+
+Let's now take this `sum` function:
+
+```python
+def sum(filename:str) -> int:
+    v = 0
+    with open(filename, "r") as f:
+        v += int(f.readline())
+```
+
+Here we have a function that sum numbers written
+on each line of a file. Let's be clear, this
+shouldn't be the responsibility of this function
+to read numbers from a file or to even know what a
+file is. Here this is clearly the case, but we often
+end up with such function when writing code assuming
+how it's going to be used or what inputs will be.
 
 ```python
 def sum(a:int, b:int, *, op:Callable[[int,int],int]):
