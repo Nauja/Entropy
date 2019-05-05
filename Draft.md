@@ -57,10 +57,10 @@ less efforts to maintain.
 # Whole principle explained with one simple example
 
 This example is going to be overkill but will help us concentrate on
-what interest us here; how to make up our mind to write code that is
+what interest us here: how to make up our mind to write code that is
 easily documentable, readable, testable and maintainable.
 
-So, let's take the case of a simple function such as `sum`:
+Let's take the case of a simple function such as `sum`:
 
 ```python
 def sum(a:int, b:int) -> int:
@@ -69,9 +69,9 @@ def sum(a:int, b:int) -> int:
 
 The most important when writing code is to keep in mind what its
 added value is. We are writing something that transforms some inputs
-to generate some outputs. One common pitfall is to not write it according to
-its added value but the way we think its users or ourself are going
-to use it, ending up with something like this:
+to generate some outputs and one common pitfall is to write it according to
+the way we think its users are going to use it instead of its added value,
+ending up with something like this:
 
 ```python
 def sum(filename:str) -> int:
