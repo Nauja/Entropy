@@ -149,7 +149,7 @@ to exist on its own and should be removed or generalized to something else.
 ## Too much assumptions
 
 What we can say about the `calc` function is that it takes two numbers and apply a lambda to it.
-But why only two numbers ? And why does the `type hints` indicate it should be `int` ?
+But why only two numbers ? And why does `type hints` indicate it should be `int` ?
 Making too much assumptions about functions parameters is another pitfall as it make your
 code closed to extension.
 
@@ -163,6 +163,8 @@ def calc(*numbers:List[Any], op:Optional[Callable[[Any,Any],Any]] = None, initia
     0
     >>> calc(1, 2, 3)
     6
+    >>> calc(1, 2, 3, initial=1)
+    7
     >>> calc(1, 2, 3, operator.add)
     6
     >>> calc(1, 2, 3, operator.mul)
@@ -170,6 +172,7 @@ def calc(*numbers:List[Any], op:Optional[Callable[[Any,Any],Any]] = None, initia
     
     :param numbers: list of numbers
     :param op: operation or operator.add by default
+    :param initial: initial sequence value
     :returns: result of op applied to numbers
     """
     op = op or operator.add
@@ -203,8 +206,33 @@ optional parameters.
 ## Good naming is as important as good coding
 
 At this stage you should notice that the added value of our function changed from
-`applying an operator to two numbers` to `applying a lambda to pair of elements`.
+`applying an operator to two numbers` to `applying a lambda to sequence of elements` as
+shown by the `"hello world !"` example.
 
+Name of the function is no more related to its value so we are going to change it:
+
+```python
+def reduce(fun:Callable[[Any,Any],Any], *sequence:List[Any], initial:Any = None) -> Any:
+    """Apply a function on pair of elements of a sequence.
+    
+    >>> reduce(operator.add, 1, 2, 3)
+    6
+    >>> reduce(operator.add, 1, 2, 3, initial=1)
+    7
+    >>> reduce(operator.add, " ", "world", " !", initial="hello")
+    hello world !
+    
+    :param fun: function to apply
+    :param sequence: sequence of elements
+    :param initial: initial sequence value
+    :returns: result of fun applied to pair of elements
+    """
+    it = iter(sequence)
+    initial = initial if initial is not None else next(it)
+    for _ in it:
+        initial = fun(initial, _)
+    return initial
+```
 
 # Readability
 
