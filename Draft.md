@@ -84,15 +84,53 @@ Here we have a function that sum numbers written on each line of a file.
 Why ? Because we think this is the most common way it's going to be used.
 Let's be clear, this shouldn't be the responsibility of this function
 to read numbers from a file or to even know what a file is.
-
-One important thing to keep in mind is that it becomes way too complex
+First principle thing to keep in mind is that it becomes way too complex
 to document, read, test or maintain a function when it has responsibilities
-beyond its scope, thus it should be avoided by limiting its scope to its added value.
+beyond its scope, thus it should be avoided as much as possible by limiting
+its scope to its added value.
+
+Now, talking about added value, does our `sum` function even have one ?
+Let's try to document it:
 
 ```python
-def sum(a:int, b:int, *, op:Callable[[int,int],int]):
+def sum(a:int, b:int) -> int:
+    """Sum two numbers.
+    
+    :param a: first number
+    :param b: second number
+    :returns: a + b
+    """
+    return a + b
+```
+
+Second principle to keep in mind is that having difficulties to write useful documentation
+or unit test for your code can be a hint that it doesn't have enough added value
+to exist and should be removed or generalized to something else. Such documentation
+clearly tells us to write `a + b` instead of using this function.
+
+So, let's write a more generalized version:
+
+```python
+def calc(a:int, b:int, *, op:Optional[Callable[[int,int],int]] = None) -> int:
+    """Perform an operation on two numbers.
+    
+    >>> calc(1, 2, operator.add)
+    3
+    >>> calc(1, 2, operator.mul)
+    2
+    
+    :param a: first number
+    :param b: second number
+    :param op: operation or operator.add by default
+    :returns: result of op applied to a and b
+    """
+    op = op or operator.add
     return op(a, b)
 ```
+
+The only modification is that the `+` operator that was previously implicit because of
+the function's name has been moved to an optional parameter with `operator.add` as
+default value.
 
 # Readability
 
