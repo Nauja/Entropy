@@ -138,7 +138,7 @@ def calc(a:int, b:int, *, op:Optional[Callable[[int,int],int]] = None) -> int:
 
 Here we wrote a more generalized version of our `sum` function by simply moving `+` operator - previously
 implicit because of function's name - to an optional parameter defaulting
-to the builtin `operator.add` function. As a side effect, we now have a useful documentation
+to `operator.add`. As a side effect, we now have a useful documentation
 with examples of usage because it becames easy to explain what the added value is and how it
 can be used.
 
