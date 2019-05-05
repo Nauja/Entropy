@@ -67,6 +67,8 @@ def sum(a:int, b:int) -> int:
     return a + b
 ```
 
+## Responsibilities beyond its scope
+
 The most important when writing code is to keep in mind what its
 added value is. We are writing something that transforms some inputs
 to generate some outputs and one common pitfall is to write it according to
@@ -84,10 +86,13 @@ Here we have a function that sum numbers written on each line of a file.
 Why ? Because we think this is the most common way it's going to be used.
 Let's be clear, this shouldn't be the responsibility of this function
 to read numbers from a file or to even know what a file is.
+
 First principle to keep in mind is that it becomes way too complex
-to document, read, test or maintain a function when it has responsibilities
+to document, read, test or maintain something when it has responsibilities
 beyond its scope, thus it should be avoided as much as possible by limiting
 its scope to its added value.
+
+## No added value
 
 Now, talking about added value, does our `sum` function even have one ?
 Let's try to document it:
@@ -103,17 +108,20 @@ def sum(a:int, b:int) -> int:
     return a + b
 ```
 
-Second principle to keep in mind is that having difficulties to write useful documentation
-or unit test for your code can be a hint that it doesn't have enough added value
-to exist and should be removed or generalized to something else. Such documentation
-clearly tells us to write `a + b` instead of using this function.
+It's straightforward. This is what you would answer to someone asking what
+the function does: "well, it's called sum, it sum two numbers". That person
+would look at you and ask why you didn't simply write `a + b` and he would
+be right. The problem here is that this function doesn't have enough added
+value to exist on its own.
 
-So, let's write a more generalized version:
+So, let's try to add some added value to it:
 
 ```python
 def calc(a:int, b:int, *, op:Optional[Callable[[int,int],int]] = None) -> int:
     """Perform an operation on two numbers.
     
+    >>> calc(1, 2)
+    3
     >>> calc(1, 2, operator.add)
     3
     >>> calc(1, 2, operator.mul)
@@ -128,9 +136,15 @@ def calc(a:int, b:int, *, op:Optional[Callable[[int,int],int]] = None) -> int:
     return op(a, b)
 ```
 
-The only modification is that the `+` operator that was previously implicit because of
-the function's name has been moved to an optional parameter with `operator.add` as
-default value.
+Here we wrote a more generalized version of our `sum` function by simply moving `+` operator
+- previously implicit because of function's name - to an optional parameter defaulting
+to the builtin `operator.add` function. As a side effect, we now have a useful documentation
+with examples of usage because it becames easy to explain what the added value is and how it
+can be used.
+
+Second principle to keep in mind is that having difficulties to write useful documentation
+or unit test for your code can be a hint that it doesn't have enough added value
+to exist on its own and should be removed or generalized to something else.
 
 # Readability
 
